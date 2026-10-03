@@ -1,7 +1,13 @@
 import dns from "dns";
 
-dns.setDefaultResultOrder("ipv4first");
-dns.setServers(["8.8.8.8", "1.1.1.1"]);
+if (process.env.NODE_ENV !== "production") {
+  dns.setDefaultResultOrder("ipv4first");
+  try {
+    dns.setServers(["8.8.8.8", "1.1.1.1"]);
+  } catch (err) {
+    console.warn("Could not set custom DNS servers:", err);
+  }
+}
 
 import app from "./app";
 import { connectDB } from "./config/db";

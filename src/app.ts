@@ -3,6 +3,7 @@ import express from "express";
 import rateLimit from "express-rate-limit";
 import helmet from "helmet";
 import morgan from "morgan";
+import { connectDB } from "./config/db";
 import { env } from "./config/env";
 import { errorHandler, notFound } from "./middlewares/error.middleware";
 import routes from "./routes";
@@ -53,6 +54,15 @@ app.use(
     },
   })
 );
+
+app.use(async (_req, _res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (err) {
+    next(err);
+  }
+});
 
 app.use("/v1", routes);
 app.use(notFound);
