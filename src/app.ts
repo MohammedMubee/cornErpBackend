@@ -64,6 +64,13 @@ app.use(async (_req, _res, next) => {
   }
 });
 
+app.get("/", (_req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Construction ERP Backend API is running successfully!",
+  });
+});
+
 app.use("/v1", routes);
 app.use(notFound);
 app.use(errorHandler);
